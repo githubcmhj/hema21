@@ -10,3 +10,8 @@ exports.getLoginPage = (req,res)=>{
    res.sendFile(path.join(__dirname,'../statics/view/login.html'))
 
 }
+
+exports.getRegisterPage = (req,res)=>{
+    // res.send('ok')
+    res.sendFile(path.join(__dirname,'../statics/view/register.html'))
+}
