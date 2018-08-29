@@ -36,7 +36,7 @@ exports.getRegisterPage = (req, res) => {
  */
 exports.register = (req, res) => {
     
-    console.log(req.body)
+    //console.log(req.body)
     const result = {
         status: 0,
         message: "注册成功"
@@ -82,6 +82,9 @@ exports.register = (req, res) => {
 
  exports.getVcodeImage = (req,res)=>{
     const vcode = parseInt(Math.random()*9000+1000); // width,height,numeric captcha
+    //把刚刚随机生成的验证码，存储到session中
+    req.session.vcode = vcode
+    
     var p = new captchapng(80,30,vcode); // width,height,numeric captcha
     p.color(0, 0, 0, 0);  // First color: background (red, green, blue, alpha)
     p.color(80, 80, 80, 255); // Second color: paint (red, green, blue, alpha)
@@ -92,4 +95,24 @@ exports.register = (req, res) => {
         'Content-Type': 'image/png'
     });
     res.end(imgbase64);
+}
+/**
+ * 
+ *最终处理，登录处理
+ */
+exports.login = (req,res)=>{
+
+   // console.log(req.body)
+    const result = {status:0,message:'登录成功'}
+
+   // console.log(req.body)
+   console.log(req.session.vcode)
+    if(req.body.vcode != req.session.vcode){
+        result.status = 1
+        result.message = "验证码不正确"
+    }
+
+     res.json(result)
+     return
+
 }

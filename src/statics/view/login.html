@@ -57,7 +57,7 @@
     </div>
 </body>
 <script>
-    //给注册一个点击事件
+    //给注册一个点击事件 跳转到注册页面
      function register(){
          window.location.href = "/account/register"
      }
@@ -66,5 +66,23 @@
         //  console.log(11111)
         $('#vcodeimgId').attr('src',`/account/vcode?randomId=${Math.random()}`)
      })
+     //登录
+     function login(){
+         console.log(22)
+        const username = $('#usernameId').val()
+        const password = md5($('#passwordId').val()+"!@#zzz-_-")
+        const vcode = $('#vcodeId').val()
+
+        //console.log(username,password,vcode)
+        $.post('/account/login',{username,password,vcode},function(result){
+            if(result.status != 0){
+                alert(result.message)
+                $('#vcodeimgId').attr('src',`/account/vcode?randomId=${Math.random()}`)
+            }else{
+
+            }
+        })
+
+     }
 </script>
 </html>

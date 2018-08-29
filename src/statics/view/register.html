@@ -43,7 +43,7 @@
     function register() {
         //1 获取到用户输入的信息
         const username = $('#usernameId').val()
-        const password = md5($('#passwordId').val())
+        const password = md5($('#passwordId').val()+"!@#zzz-_-")
 
         // console.log(username,password)
         //2 发请求给服务器
