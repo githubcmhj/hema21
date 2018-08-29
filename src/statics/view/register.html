@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 
@@ -41,5 +39,30 @@
         </div>
     </div>
 </body>
+<script>
+    function register() {
+        //1 获取到用户输入的信息
+        const username = $('#usernameId').val()
+        const password = md5($('#passwordId').val())
+
+        // console.log(username,password)
+        //2 发请求给服务器
+        $.post("/account/register", {
+            username,
+            password
+        }, function (result) {
+
+            if(result.status != 0){
+                
+                alert(result.message)
+
+            }else{
+                window.location.href = '/account/login'
+            }
+        });
+
+
+    }
+</script>
 
 </html>
