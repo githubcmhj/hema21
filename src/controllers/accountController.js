@@ -5,6 +5,8 @@
 
 const path = require('path')
 const MongoClient = require("mongodb").MongoClient;
+
+const captchapng = require('captchapng');
 // Connection URL
 const url = "mongodb://localhost:27017";
 
@@ -77,3 +79,17 @@ exports.register = (req, res) => {
 /**
  * 最终处理 ，返回图片验证码
  */
+
+ exports.getVcodeImage = (req,res)=>{
+    const vcode = parseInt(Math.random()*9000+1000); // width,height,numeric captcha
+    var p = new captchapng(80,30,vcode); // width,height,numeric captcha
+    p.color(0, 0, 0, 0);  // First color: background (red, green, blue, alpha)
+    p.color(80, 80, 80, 255); // Second color: paint (red, green, blue, alpha)
+
+    var img = p.getBase64();
+    var imgbase64 = new Buffer(img,'base64');
+    res.writeHead(200, {
+        'Content-Type': 'image/png'
+    });
+    res.end(imgbase64);
+}

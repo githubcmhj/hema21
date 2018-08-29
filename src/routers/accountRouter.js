@@ -10,12 +10,14 @@ const accountRouter = express.Router()
 const accountCTRL = require(path.join(__dirname, '../controllers/accountController.js'))
 //3 处理具体的请求
 
-//获取登陆页面的请求
+//3.1获取登陆页面的请求
 accountRouter.get('/login',accountCTRL.getLoginPage )
-//获取注册页面的请求
+//3.2获取注册页面的请求
 accountRouter.get('/register',accountCTRL.getRegisterPage )
 
-//处理注册请求
+//3.3处理注册请求
 accountRouter.post('/register',accountCTRL.register  )
+//3.4获取图片验证码
+accountRouter.get('/vcode',accountCTRL.getVcodeImage)
 //4 导出
 module.exports = accountRouter
