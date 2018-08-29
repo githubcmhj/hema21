@@ -68,20 +68,23 @@
      })
      //登录
      function login(){
-         console.log(22)
+         //console.log(22)
         const username = $('#usernameId').val()
         const password = md5($('#passwordId').val()+"!@#zzz-_-")
         const vcode = $('#vcodeId').val()
 
-        //console.log(username,password,vcode)
-        $.post('/account/login',{username,password,vcode},function(result){
-            if(result.status != 0){
+         $.post('/account/login',{username,password,vcode},function(result){
+            if(result.status !== 0){
+                // 重新获取验证码
+                $("#vcodeimgId").attr('src',`/account/vcode?randomId=${Math.random()}`)
                 alert(result.message)
-                $('#vcodeimgId').attr('src',`/account/vcode?randomId=${Math.random()}`)
+                
             }else{
-
+                // 跳转到学生列表页面
+                window.location.href = "/studentmanager/list"
             }
         })
+
 
      }
 </script>

@@ -14,13 +14,14 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // Use the session middleware
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 600000 }}))
+app.use(session({ resave: false, saveUninitialized: true,secret: 'keyboard cat', cookie: { maxAge: 600000 }}))
 
 //3 集成路由
 
 const accountRouter = require(path.join(__dirname,'./routers/accountRouter.js'))
-
+ const studentManagerRouter = require(path.join(__dirname,'./routers/studentManagerRouter.js'))
 app.use('/account',accountRouter)
+app.use('/studentmanager',studentManagerRouter)
 
 
 //4 开启web
