@@ -1,3 +1,4 @@
+
 const xtpl = require('xtpl');
 const path = require('path')
 const MongoClient = require('mongodb').MongoClient;
@@ -13,7 +14,7 @@ const dbName = 'szhm21';
  */
 
 exports.getStudentListPage = (req, res) => {
-
+     const keyword = req.query.keyword || ''
     // Use connect method to connect to the server
     MongoClient.connect(url, {
         useNewUrlParser: true
@@ -23,7 +24,7 @@ exports.getStudentListPage = (req, res) => {
         //拿到集合
         const collection = db.collection('studentInfo')
         //查询
-        collection.find({}).toArray((err, docs) => {
+        collection.find({name:{$regex:keyword}}).toArray((err, docs) => {
             //console.log(docs)
             //关闭与数据库的链接
             /**
@@ -46,3 +47,35 @@ exports.getStudentListPage = (req, res) => {
    
 
 }
+
+
+
+
+// //导入databasetool.js
+// const databasetool = require(path.join(__dirname,"../tools/databasetool.js"))
+
+// /**
+//  * 
+//  * 最终处理，
+//  */
+
+// exports.getStudentListPage = (req, res) => { 
+
+//     console.log(req.body)
+//    const keyword = req.query.keyword || ''
+//     //console.log(req.query)
+//    //调用databasetool.findList的方法，拿到数据，渲染列表页面，返回给浏览器
+//    databasetool.findList('studentInfo',{name:{$regex:keyword}},(err,docs)=>{
+    
+//     xtpl.renderFile(path.join(__dirname, "../statics/view/list.html"), {
+//         students:docs,
+//         keyword
+//     }, function (error, content) {
+//         //console.log(content)
+//         res.send(content)
+//     });
+//    })
+
+   
+
+// }

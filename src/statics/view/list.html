@@ -51,5 +51,9 @@
         </table>
     </div>
 </div>
-
+<script>
+    function search(){
+        window.location.href = `/studentmanager/list?keyword=${$('#studentNameId').val()}`
+    }
+</script>
 {{/block}}
