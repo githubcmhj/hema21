@@ -72,7 +72,7 @@
         const username = $('#usernameId').val()
         const password = md5($('#passwordId').val()+"!@#zzz-_-")
         const vcode = $('#vcodeId').val()
-
+console.log(username,password)
          $.post('/account/login',{username,password,vcode},function(result){
             if(result.status !== 0){
                 // 重新获取验证码

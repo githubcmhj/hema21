@@ -4,14 +4,10 @@
  */
 
 const path = require('path')
-const MongoClient = require("mongodb").MongoClient;
 
+const databasetool = require(path.join(__dirname,"../tools/databasetool.js"))
 const captchapng = require('captchapng');
-// Connection URL
-const url = "mongodb://localhost:27017";
 
-// Database Name
-const dbName = "szhm21";
 
 /**
  * 
@@ -104,7 +100,7 @@ exports.getVcodeImage = (req, res) => {
  */
 exports.login = (req, res) => {
 
-    // console.log(req.body)
+     console.log(req.body)
     const result = {
         status: 0,
         message: '登录成功'
@@ -119,32 +115,16 @@ exports.login = (req, res) => {
         return
     }
     //去数据库中，使用username & password去校验
-    // Use connect method to connect to the server
-    MongoClient.connect(url,{
-        useNewUrlParser: true
-    }, function (err, client) {
-       //获取db对象
-        const db = client.db(dbName);
-       //拿着要操作的集合
-       const collection = db.collection('accountInfo');
-
-      // console.log(req.body)
-
-       collection.findOne({username:req.body.username,password:req.body.password},(err,doc)=>{
-
-        console.log(doc)
-          //关闭数据库
-        client.close();
-
-
-           if(doc == null){
-               result.status = 2
-               result.message = "用户名或密码错误"
-           }
-           res.json(result)
-       })
-       
-    });
+    databasetool.findOne('accountInfo',{username:req.body.username,password:req.body.password},(err,doc)=>{
+      
+        //console.log(username,password,req.body.username,req.body.password)
+        if(doc == null){
+            result.status = 2
+            result.message = "用户名或密码错误"
+        }
+        res.json(result)
+    })
+   
    
 
 

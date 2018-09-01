@@ -26,8 +26,33 @@ exports.findList = (collectionName,params,callback)=>{
 
         //根据条件查询列表
         collection.find(params).toArray((err,docs)=>{
+            client.close();
             //执行callback 把结果返回给控制器
             callback(err,docs)
+        })
+    })
+}
+/**
+ * 暴露给控制器用的，查询一个的方法
+ * @param {*} collectionName 集合名称
+ * @param {*} params 参数对象
+ * @param {*} callback 回调函数
+ */
+exports.findOne = (collectionName,params,callback)=>{
+    MongoClient.connect(url, {
+        useNewUrlParser: true
+    }, function (err, client) {
+
+        //拿到了数据操作的db对象
+        const db = client.db(dbName);
+        // Get the documents collection 先拿到集合
+        const collection = db.collection(collectionName);
+
+        //根据条件查询列表
+        collection.findOne(params,(err,doc)=>{
+            client.close();
+            //执行callback 把结果返回给控制器
+            callback(err,doc)
         })
     })
 }
