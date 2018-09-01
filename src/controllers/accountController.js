@@ -38,41 +38,29 @@ exports.register = (req, res) => {
         message: "注册成功"
     }
     //res.json(result)
-    // Use connect method to connect to the server
-    MongoClient.connect(url, {
-        useNewUrlParser: true
-    }, function (err, client) {
 
-        //拿到了数据操作的db对象
-        const db = client.db(dbName);
-        // Get the documents collection 先拿到集合
-        const collection = db.collection('accountInfo');
-        collection.findOne({
-            username: req.body.username
-        }, (err, doc) => {
-            if (doc) {
-                client.close();
-                //更改返回的状态
-                result.status = 1;
-                result.message = "用户名已经存在"
+    databasetool.findOne('accountInfo',{username:req.body.username},(err,doc)=>{
+        if (doc) {
+           
+            //更改返回的状态
+            result.status = 1;
+            result.message = "用户名已经存在"
 
+            res.json(result)
+        } else {
+            //2 用户名不存在，则先要把我们的数据插入数据库中，然后返回注册成功给浏览器
+            databasetool.insertOne('accountInfo',req.body, (err, result2) => {
+              
+                if (result2 == null) {
+                    result.status = 2;
+                    result.message = "注册失败"
+                }
                 res.json(result)
-            } else {
-                //2 用户名不存在，则先要把我们的数据插入数据库中，然后返回注册成功给浏览器
-                collection.insertOne(req.body, (err, result2) => {
-                    client.close();
-                    if (result2 == null) {
-                        result.status = 2;
-                        result.message = "注册失败"
-                    }
-                    res.json(result)
-                })
+            })
 
-            }
-        })
-
-    });
-
+        }
+    })
+   
 }
 /**
  * 最终处理 ，返回图片验证码
