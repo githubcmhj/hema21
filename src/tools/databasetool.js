@@ -25,7 +25,7 @@ exports.findList = (collectionName,params,callback)=>{
         const collection = db.collection(collectionName);
 
         //根据条件查询列表
-        collection.find(params,(err,docs)=>{
+        collection.find(params).toArray((err,docs)=>{
             //执行callback 把结果返回给控制器
             callback(err,docs)
         })
